@@ -24,12 +24,12 @@
               parseFloat(markers[i].getAttribute("lat")),
               parseFloat(markers[i].getAttribute("lng")));
           var html = "<b>" + name + "</b> <br/>";
-          var icon = customIcons[name] || {};
+          var pokemon = customIcons[name] || {};
+          pokemon.icon.scaledSize = new google.maps.Size(30, 30)
           var marker = new google.maps.Marker({
             map: map,
             position: point,
-            icon: icon.icon,
-            shadow: icon.shadow
+            icon: pokemon.icon
           });
           bindInfoWindow(marker, map, infoWindow, html);
         }
