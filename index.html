@@ -36,6 +36,9 @@
           bindInfoWindow(marker, map, infoWindow, html);
         }
       });
+      getCurrentLocation(function(location) {
+        map.setCenter(location);
+      });
     }
 
     function bindInfoWindow(marker, map, infoWindow, html) {
@@ -61,7 +64,35 @@
       request.send(null);
     }
 
+    function getCurrentLocation(callback) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+          initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          callback(initialLocation)
+        });
+      }
+    }
+
+    function placeNewMarker(map, name) {
+      var pokemon = customIcons[name] || {};
+      pokemon.icon.scaledSize = new google.maps.Size(40, 40);
+      pokemon.icon.origin = new google.maps.Point(0,0);
+      pokemon.icon.anchor = new google.maps.Point(0, 0);
+
+      getCurrentLocation(function(location) {
+        new google.maps.Marker({
+          position: location,
+          map: map,
+          icon: pokemon.icon
+        });
+
+        map.setCenter(location);
+      });
+    }
+
     function doNothing() {}
+
+
 
 
     var customIcons = {
